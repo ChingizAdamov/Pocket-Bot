@@ -1,0 +1,10 @@
+#yml file
+db.file: "bot.db"
+
+bot_url: "https://t.me/mvp_pocket_bot"
+
+messages:
+  responses:
+  start: "Привет! Для того чтобы сохранить ссылку в Pocket аккаунте тебе необходимо дать мне доступ, бро! Для этого переходиим по ссылке: \n%s"
+  already_authorized: already_authorized:"Ты уже авторезирован, тебе лишь надо скинуть мне ссылку :)"
+  unknown_command: "Я не знаю такой команды :("
