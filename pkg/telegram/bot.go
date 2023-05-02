@@ -3,6 +3,7 @@ package telegram
 import (
 	"log"
 
+	"github.com/ChingizAdamov/pocket_bot/pkg/config"
 	"github.com/ChingizAdamov/pocket_bot/pkg/repository"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/zhashkevych/go-pocket-sdk"
@@ -12,10 +13,12 @@ type Bot struct {
 	pocketClient *pocket.Client
 	TokenRepositiry repository.TokenRepositore
 	redirectURL string
+	
+	messages config.Messages
 }
 
-func NewBot(bot *tgbotapi.BotAPI, pocketClient *pocket.Client, tr repository.TokenRepositore ,redirectURL string) *Bot {
-	return &Bot{bot: bot, pocketClient: pocketClient, redirectURL: redirectURL, TokenRepositiry: tr}
+func NewBot(bot *tgbotapi.BotAPI, pocketClient *pocket.Client, tr repository.TokenRepositore ,redirectURL string, messages config.Messages) *Bot {
+	return &Bot{bot: bot, pocketClient: pocketClient, redirectURL: redirectURL, TokenRepositiry: tr, messages: messages}
 }
 
 func (b *Bot) Start() error {
@@ -37,12 +40,14 @@ func (b *Bot) handleUpdates(updates tgbotapi.UpdatesChannel) {
 	}
 	if update.Message.IsCommand() {
 		b.handleCommand(update.Message)
-		continue
+			continue
+		}
+		b.handleMessage(update.Message) 
+	}
+		
 	}
 
-	b.handleMessage(update.Message)
-}
-}
+
 
 func (b *Bot) initUpdatesChannel() (tgbotapi.UpdatesChannel, error) {
 	u := tgbotapi.NewUpdate(0)
@@ -51,6 +56,7 @@ func (b *Bot) initUpdatesChannel() (tgbotapi.UpdatesChannel, error) {
 	return b.bot.GetUpdatesChan(u), nil
 
 } 
+
 
 
 
